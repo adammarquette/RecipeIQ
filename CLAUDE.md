@@ -9,6 +9,7 @@ RecipeIQ/
 ├── CLAUDE.md                  # This file — org overview and agent roster
 ├── .docs/                     # Master architecture and planning documents
 │   ├── architecture.md        # System architecture and component diagrams
+│   ├── branching-strategy.md  # Gitflow branch model and PR rules
 │   ├── domain-model.md        # Domain model and bounded contexts
 │   └── roadmap.md             # Feature roadmap and planning
 ├── .org/                      # Agent personas and shared org context
@@ -91,4 +92,6 @@ graph TB
 - API style: RESTful, controller-per-domain-concept
 - Tests: xUnit, no mocking of domain services — prefer integration style against `InMemoryStore`
 - Diagrams: Mermaid (`.md` files in `.docs/` or agent context folders)
-- Branch strategy: feature branches off `main`, PRs reviewed by Claude Code Review workflow
+- Branch strategy: Gitflow — `feature/*` → `develop` → `release/*` → `main`; see [.docs/branching-strategy.md](.docs/branching-strategy.md)
+- `main` is production-only; all development integrates through `develop`
+- Merges to `main` require human approval; merges to `develop` require Claude Code Review pass
