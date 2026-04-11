@@ -4,6 +4,8 @@ All agents operating in the RecipeIQ software factory follow these conventions.
 
 **Authoritative reference**: [.NET C# Coding Conventions — Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
 
+**Target framework**: .NET 10 — all projects must target `net10.0`
+
 ---
 
 ## Project Structure
@@ -16,11 +18,18 @@ src/MarqSpec.RecipeIQ.Api/
 src/MarqSpec.RecipeIQ.Core/
   Models/             # Domain entities (plain C# classes, no framework deps)
   Services/           # Domain services + interfaces
+
+src/MarqSpec.RecipeIQ.Data/
+  Entities/           # EF Core entity models (mapped to DB schema)
+  Migrations/         # EF Core migrations (auto-generated; do not edit manually)
+  RecipeIQDbContext.cs  # Single DbContext for the solution
 ```
 
-- **Namespaces**: `MarqSpec.RecipeIQ.Api.*` for presentation, `MarqSpec.RecipeIQ.Core.*` for domain
+- **Namespaces**: `MarqSpec.RecipeIQ.Api.*` for presentation, `MarqSpec.RecipeIQ.Core.*` for domain, `MarqSpec.RecipeIQ.Data.*` for data access
 - One type per file; filename matches type name
-- `RecipeIQ.Core` must not reference ASP.NET or any infrastructure library
+- `MarqSpec.RecipeIQ.Core` must not reference ASP.NET or any infrastructure library
+- `MarqSpec.RecipeIQ.Data` owns all EF Core concerns; no entity models or `DbContext` types may live outside this project
+- `MarqSpec.RecipeIQ.Core` may reference `MarqSpec.RecipeIQ.Data` but not `MarqSpec.RecipeIQ.Api`
 
 ---
 
@@ -111,34 +120,6 @@ src/MarqSpec.RecipeIQ.Core/
 - Begin comment text with a capital letter; end with a period
 - One space between `//` and comment text
 - Use XML doc comments (`///`) for all public members, types, and interfaces
-
----
-
-## API Design
-
-- RESTful resource-oriented endpoints
-- Controllers named after domain participants: Recipes, Creators, Orders, Retailers, Platform
-- Return `IActionResult` / `ActionResult<T>` from controller actions
-- Standard HTTP status codes: 200, 201, 400, 404, 422
-
----
-
-## Testing
-
-- Framework: xUnit
-- No mocking of domain services — test against `InMemoryStore` directly
-- Test class naming: `{SubjectUnderTest}Tests`
-- One test file per service; tests live in `tests/MarqSpec.RecipeIQ.Tests/`
-- Test method names as sentences: `PlaceOrder_WithValidRecipe_ReturnsConfirmedOrder`
-
----
-
-## Diagrams
-
-- All diagrams authored in **Mermaid** format inside `.md` files
-- Architecture diagrams live in `.docs/`
-- Agent working diagrams live in `.org/<agent>/context/`
-- No image files — diagrams are always source-controlled as text
 
 ---
 

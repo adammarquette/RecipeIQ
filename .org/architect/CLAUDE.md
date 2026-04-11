@@ -51,3 +51,12 @@ graph LR
     A -->|owns| D[.docs/roadmap.md]
     A -->|reviews| E[All agent context diagrams]
 ```
+
+---
+
+## Diagrams
+
+- All diagrams authored in **Mermaid** format inside `.md` files
+- Architecture diagrams live in `.docs/`
+- Agent working diagrams live in `.org/<agent>/context/`
+- No image files — diagrams are always source-controlled as text
