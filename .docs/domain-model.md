@@ -18,7 +18,7 @@ graph TB
         Preferences
     end
 
-    subgraph Creator["Creator Context"]
+    subgraph CreatorCtx["Creator Context"]
         Creator
         Portfolio
         Analytics
@@ -27,8 +27,8 @@ graph TB
 
     subgraph Fulfillment["Fulfillment Context"]
         Order
+        Basket
         Ingredient
-        Cart
         Retailer
     end
 
@@ -79,6 +79,11 @@ flowchart LR
 - Root aggregate representing a cook's intent to make a recipe
 - Resolves `Ingredient` availability across `Retailer` inventory
 - Tracks `OrderStatus`: Pending → Confirmed → Fulfilled
+
+### Basket (Fulfillment Context)
+- Value object produced when an Order resolves its Recipe's ingredients
+- Groups ingredients by Retailer for fulfillment routing
+- Lifecycle is tied to its parent Order — not persisted independently
 
 ### Creator (Creator Context)
 - Root entity representing a recipe author

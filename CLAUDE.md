@@ -17,12 +17,14 @@ RecipeIQ/
 │   ├── architect/             # Architect agent persona and context
 │   ├── backend/               # Backend engineer agent persona and context
 │   ├── qa/                    # QA engineer agent persona and context
-│   └── platform/              # Platform engineer agent persona and context
+│   ├── platform/              # Platform engineer agent persona and context
+│   └── research/              # Research & Requirements agent persona and context
 ├── src/
-│   ├── RecipeIQ.Api/          # ASP.NET Core Web API (controllers, entry point)
-│   └── RecipeIQ.Core/         # Domain models and services
+│   ├── MarqSpec.RecipeIQ.Api/   # ASP.NET Core Web API (controllers, entry point)
+│   ├── MarqSpec.RecipeIQ.Core/  # Domain models and services
+│   └── MarqSpec.RecipeIQ.Data/  # EF Core DbContext, entities, migrations
 └── tests/
-    └── RecipeIQ.Tests/        # xUnit integration and unit tests
+    └── MarqSpec.RecipeIQ.Tests/ # xUnit integration and unit tests
 ```
 
 ## Agent Roster
@@ -33,6 +35,7 @@ RecipeIQ/
 | Backend Engineer | [.org/backend/CLAUDE.md](.org/backend/CLAUDE.md) | .NET/C# API, domain services, data layer, feature implementation |
 | QA Engineer | [.org/qa/CLAUDE.md](.org/qa/CLAUDE.md) | Test strategy, test authoring, quality gates, coverage |
 | Platform Engineer | [.org/platform/CLAUDE.md](.org/platform/CLAUDE.md) | CI/CD, GitHub Actions, infrastructure, observability |
+| Research & Requirements | [.org/research/CLAUDE.md](.org/research/CLAUDE.md) | User research, PRDs, user stories, acceptance criteria, roadmap ownership |
 
 ## High-Level Architecture
 
@@ -45,7 +48,7 @@ graph TB
         PL[Platform]
     end
 
-    subgraph API["RecipeIQ.Api"]
+    subgraph API["MarqSpec.RecipeIQ.Api"]
         RC[RecipesController]
         CC[CreatorsController]
         OC[OrdersController]
@@ -53,13 +56,16 @@ graph TB
         PC[PlatformController]
     end
 
-    subgraph Core["RecipeIQ.Core"]
+    subgraph Core["MarqSpec.RecipeIQ.Core"]
         RDS[RecipeDiscoveryService]
         CS[CreatorService]
         FS[FulfillmentService]
         RS[RetailerService]
         PS[PlatformService]
-        Store[InMemoryStore]
+    end
+
+    subgraph Data["MarqSpec.RecipeIQ.Data"]
+        Store[RecipeIQDbContext]
     end
 
     HC -->|discovers recipes| RC

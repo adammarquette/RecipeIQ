@@ -13,7 +13,7 @@ graph LR
         Admin[Admin Tools]
     end
 
-    subgraph Api["RecipeIQ.Api (Presentation)"]
+    subgraph Api["MarqSpec.RecipeIQ.Api (Presentation)"]
         direction TB
         RecipesCtrl[RecipesController]
         CreatorsCtrl[CreatorsController]
@@ -22,7 +22,7 @@ graph LR
         PlatformCtrl[PlatformController]
     end
 
-    subgraph Core["RecipeIQ.Core (Domain)"]
+    subgraph Core["MarqSpec.RecipeIQ.Core (Domain)"]
         direction TB
         subgraph Services["Services"]
             RDS[IRecipeDiscoveryService]
@@ -31,19 +31,24 @@ graph LR
             RS[IRetailerService]
             PS[IPlatformService]
         end
-        subgraph Store["Persistence"]
-            IMS[InMemoryStore]
-        end
         subgraph Models["Domain Models"]
             Recipe
             Creator
             HomeCook
             Retailer
             Order
+            Basket
             Ingredient
             Subscription
             PlatformMetrics
         end
+    end
+
+    subgraph Data["MarqSpec.RecipeIQ.Data (Infrastructure)"]
+        direction TB
+        DbCtx[RecipeIQDbContext]
+        Entities["Entities (EF Core models)"]
+        Migrations["Migrations"]
     end
 
     Web & Admin --> Api
@@ -52,8 +57,9 @@ graph LR
     OrdersCtrl --> FS
     RetailersCtrl --> RS
     PlatformCtrl --> PS
-    Services --> IMS
     Services --> Models
+    Services --> DbCtx
+    DbCtx --> Entities
 ```
 
 ## Domain Model
@@ -99,6 +105,11 @@ erDiagram
         OrderStatus Status
         decimal TotalCost
     }
+    Basket {
+        Guid Id
+        string OrderId
+        string RetailerId
+    }
     Subscription {
         Guid Id
         string HomeCookId
@@ -116,7 +127,10 @@ erDiagram
     HomeCook ||--o| Subscription : holds
     Recipe ||--o{ Ingredient : contains
     Recipe }o--|| Creator : "authored by"
+    Order ||--|| Basket : "produces"
     Order }o--|| Recipe : "for"
+    Basket }o--o{ Ingredient : "contains"
+    Basket }o--|| Retailer : "fulfilled by"
     Ingredient }o--|| Retailer : "stocked by"
 ```
 
@@ -128,7 +142,7 @@ sequenceDiagram
     participant API as RecipeIQ.Api
     participant RDS as RecipeDiscoveryService
     participant FS as FulfillmentService
-    participant Store as InMemoryStore
+    participant Store as RecipeIQDbContext
 
     Cook->>API: GET /recipes?budget=25&tags=quick
     API->>RDS: DiscoverAsync(filters)
@@ -175,6 +189,7 @@ graph TB
 
 | # | Decision | Status | Notes |
 |---|----------|--------|-------|
-| ADR-001 | Use InMemoryStore for initial persistence | Accepted | Enables fast iteration; swap for EF Core when schema stabilizes |
+| ADR-001 | Use InMemoryStore for initial persistence | Superseded | Replaced by EF Core / `RecipeIQDbContext` in `MarqSpec.RecipeIQ.Data` |
 | ADR-002 | Service interfaces (I*Service) for all domain services | Accepted | Enables DI and future test isolation |
 | ADR-003 | One controller per marketplace participant | Accepted | Mirrors four-sided marketplace structure |
+| ADR-004 | Introduce `MarqSpec.RecipeIQ.Data` for EF Core persistence | Accepted | Separates infrastructure from domain; Core remains framework-agnostic |
