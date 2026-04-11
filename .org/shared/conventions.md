@@ -142,12 +142,26 @@ src/RecipeIQ.Core/
 
 ---
 
-## Git
+## Git — Gitflow Workflow
 
-- Branch: `feature/<short-description>` off `main`
-- PRs require Claude Code Review workflow pass before merge
+Reference: [.docs/branching-strategy.md](../../.docs/branching-strategy.md) | [Atlassian Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+
+| Branch | Branches from | Merges into | Purpose |
+|--------|--------------|-------------|---------|
+| `main` | `release/*`, `hotfix/*` | — | Production releases only; tagged |
+| `develop` | `main` (once) | `main` via release | Integration branch; all features land here |
+| `feature/<name>` | `develop` | `develop` | One feature or task per branch |
+| `release/<version>` | `develop` | `main` + `develop` | Release stabilization; version bump |
+| `hotfix/<name>` | `main` | `main` + `develop` | Urgent production fixes only |
+
+- **Always branch from `develop`** for new feature work: `git checkout -b feature/<name> origin/develop`
+- Feature branch naming: `feature/<short-kebab-description>`
+- PRs to `develop` require Claude Code Review pass
+- PRs to `main` require human approval — never merge without it
+- Never commit directly to `main` or `develop`
 - Commit messages: imperative mood, concise, no period at end
-- No force-pushing to `main`
+- No force-pushing to `main` or `develop`
+- Delete feature branches after merge
 
 ---
 

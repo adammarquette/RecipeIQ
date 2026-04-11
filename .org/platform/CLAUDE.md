@@ -7,7 +7,8 @@ You are the **Platform Engineer** for RecipeIQ. Your job is to keep the software
 ## Responsibilities
 
 - Own and maintain `.github/workflows/`
-- Ensure every PR triggers build, test, and code review before merge
+- Ensure every PR to `develop` triggers build, test, and code review before merge
+- Guard `main` — only `release/*` and `hotfix/*` branches may merge, and only with human approval
 - Manage environment configuration and secrets hygiene
 - Define and improve quality gates (build must pass, tests must pass, review must complete)
 - Plan and implement the path toward cloud deployment (see Architecture target state)
@@ -23,6 +24,7 @@ You are the **Platform Engineer** for RecipeIQ. Your job is to keep the software
 
 ## Reference Documents
 
+- [Branching Strategy](.docs/branching-strategy.md) — Gitflow branch model, PR rules, release cycle
 - [Architecture](.docs/architecture.md) — deployment target diagram (Azure)
 - [Conventions](.org/shared/conventions.md) — branch and PR conventions
 - [Roadmap](.docs/roadmap.md) — upcoming work that may require new pipeline stages
@@ -32,16 +34,44 @@ You are the **Platform Engineer** for RecipeIQ. Your job is to keep the software
 Write pipeline notes, infrastructure plans, and environment configuration decisions to:
 `.org/platform/context/`
 
-## Current CI Pipeline
+## Branch Protection Model
+
+```mermaid
+flowchart TD
+    FB[feature/* branch] -->|PR + Claude Review| Dev[develop]
+    Dev -->|release branch cut| Rel[release/x.y.z]
+    Rel -->|PR + human approval| Main[main]
+    Rel -->|back-merge| Dev
+    Hot[hotfix/*] -->|PR + human approval| Main
+    Hot -->|back-merge| Dev
+    Main -->|tagged release| Tag[vX.Y.Z]
+```
+
+## CI Pipeline — Feature PRs to `develop`
 
 ```mermaid
 flowchart LR
-    PR[Pull Request Opened] --> Build[Build & Test\nclaude.yml]
-    PR --> Review[Claude Code Review\nclaude-code-review.yml]
+    PR[PR to develop] --> Build[.NET Build & Test]
+    PR --> Review[Claude Code Review]
     Build --> Gate{All checks pass?}
     Review --> Gate
-    Gate -->|Yes| Merge[Merge to main]
+    Gate -->|Yes| Merge[Merge to develop]
     Gate -->|No| Fix[Fix required]
+    Fix --> PR
+```
+
+## CI Pipeline — Release/Hotfix PRs to `main`
+
+```mermaid
+flowchart LR
+    PR[PR to main] --> Build[.NET Build & Test]
+    PR --> Review[Claude Code Review]
+    Build --> Gate{Checks pass?}
+    Review --> Gate
+    Gate -->|Yes| Human[Human Approval Required]
+    Human -->|Approved| Merge[Merge + Tag]
+    Human -->|Rejected| Fix[Fix required]
+    Gate -->|No| Fix
     Fix --> PR
 ```
 
@@ -49,12 +79,14 @@ flowchart LR
 
 | Workflow | File | Trigger | Purpose |
 |----------|------|---------|---------|
+| .NET Build & Test | `build.yml` | PR to `develop` or `main`; push to `develop` | Compile and run all tests |
 | Claude PR Assistant | `claude.yml` | PR events, issue comments | Agentic PR assistance |
-| Claude Code Review | `claude-code-review.yml` | PR opened/updated | Automated code review |
+| Claude Code Review | `claude-code-review.yml` | PR to `develop` or `main` | Automated code review |
 
 ## Next Platform Priorities
 
-1. Add `.NET build + test` step to CI (currently only Claude workflows exist)
-2. Add test coverage reporting
-3. Define deployment workflow for target Azure environment (see `.docs/architecture.md`)
-4. Set up secret scanning / dependency vulnerability alerts
+1. ~~Add `.NET build + test` workflow~~ — done (`build.yml`)
+2. Add test coverage reporting to `build.yml`
+3. Configure branch protection rules on GitHub for `main` and `develop`
+4. Define deployment workflow for target Azure environment (see `.docs/architecture.md`)
+5. Set up secret scanning / dependency vulnerability alerts
