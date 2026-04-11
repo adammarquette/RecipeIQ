@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/RecipeIQ.Api/RecipeIQ.Api.csproj" />
+    <Project Path="src/RecipeIQ.Core/RecipeIQ.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RecipeIQ.Tests/RecipeIQ.Tests.csproj" />
+  </Folder>
+</Solution>
