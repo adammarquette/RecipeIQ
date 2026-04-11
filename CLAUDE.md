@@ -19,10 +19,10 @@ RecipeIQ/
 │   ├── qa/                    # QA engineer agent persona and context
 │   └── platform/              # Platform engineer agent persona and context
 ├── src/
-│   ├── RecipeIQ.Api/          # ASP.NET Core Web API (controllers, entry point)
-│   └── RecipeIQ.Core/         # Domain models and services
+│   ├── MarqSpec.RecipeIQ.Api/   # ASP.NET Core Web API (controllers, entry point)
+│   └── MarqSpec.RecipeIQ.Core/  # Domain models and services
 └── tests/
-    └── RecipeIQ.Tests/        # xUnit integration and unit tests
+    └── MarqSpec.RecipeIQ.Tests/ # xUnit integration and unit tests
 ```
 
 ## Agent Roster
