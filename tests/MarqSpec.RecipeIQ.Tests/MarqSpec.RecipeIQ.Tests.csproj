@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\RecipeIQ.Core\RecipeIQ.Core.csproj" />
+    <ProjectReference Include="..\..\src\MarqSpec.RecipeIQ.Core\MarqSpec.RecipeIQ.Core.csproj" />
   </ItemGroup>
 
 </Project>

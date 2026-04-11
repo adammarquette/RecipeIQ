@@ -9,16 +9,16 @@ All agents operating in the RecipeIQ software factory follow these conventions.
 ## Project Structure
 
 ```
-src/RecipeIQ.Api/
+src/MarqSpec.RecipeIQ.Api/
   Controllers/        # One controller per marketplace participant
   Program.cs          # Composition root — DI registrations here
 
-src/RecipeIQ.Core/
+src/MarqSpec.RecipeIQ.Core/
   Models/             # Domain entities (plain C# classes, no framework deps)
   Services/           # Domain services + interfaces
 ```
 
-- **Namespaces**: `RecipeIQ.Api.*` for presentation, `RecipeIQ.Core.*` for domain
+- **Namespaces**: `MarqSpec.RecipeIQ.Api.*` for presentation, `MarqSpec.RecipeIQ.Core.*` for domain
 - One type per file; filename matches type name
 - `RecipeIQ.Core` must not reference ASP.NET or any infrastructure library
 
@@ -88,7 +88,7 @@ src/RecipeIQ.Core/
 - Be aware of deadlocks; use `ConfigureAwait` where appropriate
 
 ### Namespaces and usings
-- Use **file-scoped namespace declarations**: `namespace RecipeIQ.Core.Services;`
+- Use **file-scoped namespace declarations**: `namespace MarqSpec.RecipeIQ.Core.Services;`
 - Place `using` directives **outside** the namespace declaration
 
 ### LINQ
@@ -128,7 +128,7 @@ src/RecipeIQ.Core/
 - Framework: xUnit
 - No mocking of domain services — test against `InMemoryStore` directly
 - Test class naming: `{SubjectUnderTest}Tests`
-- One test file per service; tests live in `tests/RecipeIQ.Tests/`
+- One test file per service; tests live in `tests/MarqSpec.RecipeIQ.Tests/`
 - Test method names as sentences: `PlaceOrder_WithValidRecipe_ReturnsConfirmedOrder`
 
 ---

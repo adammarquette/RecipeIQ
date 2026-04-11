@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RecipeIQ.Core\RecipeIQ.Core.csproj" />
+    <ProjectReference Include="..\MarqSpec.RecipeIQ.Core\MarqSpec.RecipeIQ.Core.csproj" />
   </ItemGroup>
 
 </Project>

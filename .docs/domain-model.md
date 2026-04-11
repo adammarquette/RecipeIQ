@@ -18,7 +18,7 @@ graph TB
         Preferences
     end
 
-    subgraph Creator["Creator Context"]
+    subgraph CreatorCtx["Creator Context"]
         Creator
         Portfolio
         Analytics
