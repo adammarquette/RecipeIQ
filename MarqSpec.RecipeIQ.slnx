@@ -1,0 +1,38 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/RecipeIQ.Api/RecipeIQ.Api.csproj" />
+    <Project Path="src/RecipeIQ.Core/RecipeIQ.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RecipeIQ.Tests/RecipeIQ.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+    <File Path="CLAUDE.md" />
+    <File Path=".gitignore" />
+    <Folder Name="/Solution Items/.docs/">
+      <File Path=".docs/architecture.md" />
+      <File Path=".docs/branching-strategy.md" />
+      <File Path=".docs/domain-model.md" />
+      <File Path=".docs/roadmap.md" />
+    </Folder>
+    <Folder Name="/Solution Items/.org/">
+      <Folder Name="/Solution Items/.org/shared/">
+        <File Path=".org/shared/conventions.md" />
+        <File Path=".org/shared/glossary.md" />
+      </Folder>
+      <Folder Name="/Solution Items/.org/architect/">
+        <File Path=".org/architect/CLAUDE.md" />
+      </Folder>
+      <Folder Name="/Solution Items/.org/backend/">
+        <File Path=".org/backend/CLAUDE.md" />
+      </Folder>
+      <Folder Name="/Solution Items/.org/qa/">
+        <File Path=".org/qa/CLAUDE.md" />
+      </Folder>
+      <Folder Name="/Solution Items/.org/platform/">
+        <File Path=".org/platform/CLAUDE.md" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Solution>
