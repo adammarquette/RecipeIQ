@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="src/MarqSpec.RecipeIQ.Api/MarqSpec.RecipeIQ.Api.csproj" />
   <Project Path="src/MarqSpec.RecipeIQ.Core/MarqSpec.RecipeIQ.Core.csproj" />
+  <Project Path="src/MarqSpec.RecipeIQ.Data/MarqSpec.RecipeIQ.Data.csproj" />
   <Project Path="tests/MarqSpec.RecipeIQ.Tests/MarqSpec.RecipeIQ.Tests.csproj" />
   <Folder Name="/Solution Items/">
     <File Path="README.md" />

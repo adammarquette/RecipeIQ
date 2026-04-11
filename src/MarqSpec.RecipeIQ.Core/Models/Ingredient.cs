@@ -20,6 +20,7 @@ public class RecipeIngredient
 
 public class RetailerInventoryItem
 {
+    public string Name { get; set; } = string.Empty;
     public Guid IngredientId { get; set; }
     public Ingredient? Ingredient { get; set; }
     public decimal PricePerUnit { get; set; }

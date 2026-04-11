@@ -1,0 +1,44 @@
+name: Spike
+description: Time-boxed research task to reduce uncertainty.
+title: "Spike: "
+labels:
+  - type:spike
+  - status:ready
+  - agent:architect
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Research Question
+      description: What uncertainty does this spike resolve?
+    validations:
+      required: true
+
+  - type: input
+    id: timebox
+    attributes:
+      label: Timebox
+      placeholder: Example: 1 day
+    validations:
+      required: true
+
+  - type: textarea
+    id: deliverables
+    attributes:
+      label: Deliverables
+      placeholder: |
+        - ADR recommendation
+        - Trade-off summary
+        - Proposed next step
+    validations:
+      required: true
+
+  - type: textarea
+    id: done
+    attributes:
+      label: Definition of Done
+      placeholder: |
+        - [ ] Findings documented in .org/<agent>/context/
+        - [ ] Recommendation posted to issue comments
+    validations:
+      required: true
