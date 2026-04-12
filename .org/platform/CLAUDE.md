@@ -31,8 +31,8 @@ You are the **Platform Engineer** for RecipeIQ. Your job is to keep the software
 
 ## Working Context
 
-Write pipeline notes, infrastructure plans, and environment configuration decisions to:
-`.org/platform/context/`
+Write pipeline notes, infrastructure plans, and environment configuration decisions to `.org/platform/context/`.
+See [context/pipeline-status.md](context/pipeline-status.md) for current pipeline priorities.
 
 ## Branch Protection Model
 
@@ -78,15 +78,7 @@ flowchart LR
 ## Workflow Inventory
 
 | Workflow | File | Trigger | Purpose |
-|----------|------|---------|---------|
+| -------- | ---- | ------- | ------- |
 | .NET Build & Test | `build.yml` | PR to `develop` or `main`; push to `develop` | Compile and run all tests |
 | Claude PR Assistant | `claude.yml` | PR events, issue comments | Agentic PR assistance |
 | Claude Code Review | `claude-code-review.yml` | PR to `develop` or `main` | Automated code review |
-
-## Next Platform Priorities
-
-1. ~~Add `.NET build + test` workflow~~ — done (`build.yml`)
-2. ~~Add test coverage reporting to `build.yml`~~ — done
-3. Configure branch protection rules on GitHub for `main` and `develop`
-4. Define deployment workflow for target Azure environment (see `.docs/architecture.md`)
-5. Set up secret scanning / dependency vulnerability alerts

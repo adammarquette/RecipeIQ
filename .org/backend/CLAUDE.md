@@ -30,50 +30,8 @@ You are the **Backend Engineer** for RecipeIQ. Your job is to implement features
 
 ## Working Context
 
-Write implementation notes, spike code, and in-progress design decisions to:
-`.org/backend/context/`
-
-## Current Codebase Map
-
-```mermaid
-graph TB
-    subgraph Api["MarqSpec.RecipeIQ.Api"]
-        P[Program.cs]
-        subgraph Controllers
-            RC[RecipesController]
-            CC[CreatorsController]
-            OC[OrdersController]
-            RtC[RetailersController]
-            PC[PlatformController]
-        end
-    end
-
-    subgraph Core["MarqSpec.RecipeIQ.Core"]
-        subgraph Interfaces["Service Interfaces"]
-            IRDS[IRecipeDiscoveryService]
-            ICS[ICreatorService]
-            IFS[IFulfillmentService]
-            IRS[IRetailerService]
-            IPS[IPlatformService]
-        end
-        subgraph Implementations["Service Implementations"]
-            RDS[RecipeDiscoveryService]
-            CS[CreatorService]
-            FS[FulfillmentService]
-            RS[RetailerService]
-            PS[PlatformService]
-        end
-        IMS[InMemoryStore]
-    end
-
-    P --> Controllers
-    RC --> IRDS --> RDS
-    CC --> ICS --> CS
-    OC --> IFS --> FS
-    RtC --> IRS --> RS
-    PC --> IPS --> PS
-    RDS & CS & FS & RS & PS --> IMS
-```
+Write implementation notes, spike code, and in-progress design decisions to `.org/backend/context/`.
+See [context/backlog.md](context/backlog.md) for current implementation priorities.
 
 ## API Design
 
@@ -101,12 +59,3 @@ graph TB
 - Register options in `Program.cs` via `builder.Services.Configure<T>(builder.Configuration.GetSection("SectionName"))`
 - Validate options at startup using `ValidateDataAnnotations()` and `ValidateOnStart()`
 - Prefer `IOptions<T>` for singleton-lifetime consumers; use `IOptionsSnapshot<T>` for scoped/transient consumers that need per-request values
-
----
-
-## Next Implementation Priorities
-
-See [Roadmap](.docs/roadmap.md) — key next items:
-1. EF Core persistence (replace `InMemoryStore`)
-2. Authentication middleware
-3. Cook profile management endpoints

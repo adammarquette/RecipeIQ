@@ -151,3 +151,38 @@ Reference: [.docs/branching-strategy.md](../../.docs/branching-strategy.md) | [A
 - Each agent writes working context to `.org/<agent>/context/`
 - Context files are `.md` with Mermaid diagrams where helpful
 - Context is not ephemeral — it persists across sessions as working memory
+- **Never embed volatile working state in a CLAUDE.md persona file** — put it in `context/` instead
+
+---
+
+## Agent Handoff Protocol
+
+When one agent produces output for another to act on, it writes a handoff file to its own `context/` folder.
+
+### File naming
+
+| Handoff type | File name pattern | Example |
+| ------------ | ----------------- | ------- |
+| PRD / feature brief | `prd-<feature>.md` | `prd-cook-profile.md` |
+| Implementation notes | `impl-<feature>.md` | `impl-cook-profile.md` |
+| Test plan / coverage notes | `test-<feature>.md` | `test-cook-profile.md` |
+| ADR draft | `adr-<nnn>-<topic>.md` | `adr-005-auth-strategy.md` |
+| Pipeline / infra change | `infra-<topic>.md` | `infra-azure-deploy.md` |
+
+### Handoff sequence
+
+```text
+Research  →  prd-<feature>.md in .org/research/context/
+Architect →  reads PRD, writes adr-<nnn>-<topic>.md in .org/architect/context/
+Backend   →  reads ADR + PRD, writes impl-<feature>.md in .org/backend/context/
+QA        →  reads impl notes + acceptance criteria, writes test-<feature>.md in .org/qa/context/
+```
+
+### Reads before starting
+
+| Agent | Must read before starting work |
+| ----- | ------------------------------ |
+| Architect | `.org/research/context/` for any open PRDs |
+| Backend | `.org/architect/context/` for ADRs; `.org/research/context/` for acceptance criteria |
+| QA | `.org/backend/context/` for impl notes; `.org/research/context/` for acceptance criteria |
+| Platform | `.docs/architecture.md` for deployment target; `.org/architect/context/` for infra ADRs |

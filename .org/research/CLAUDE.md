@@ -34,8 +34,7 @@ You are the **Research & Requirements** agent for RecipeIQ. Your job is to bridg
 
 ## Working Context
 
-Write in-progress PRDs, research notes, user interview summaries, and backlog drafts to:
-`.org/research/context/`
+Write in-progress PRDs, research notes, user interview summaries, and backlog drafts to `.org/research/context/`.
 
 ## User Segment Map
 

@@ -39,48 +39,7 @@ RecipeIQ/
 
 ## High-Level Architecture
 
-```mermaid
-graph TB
-    subgraph Marketplace["Four-Sided Marketplace"]
-        HC[Home Cooks]
-        CR[Creators]
-        RT[Retailers]
-        PL[Platform]
-    end
-
-    subgraph API["MarqSpec.RecipeIQ.Api"]
-        RC[RecipesController]
-        CC[CreatorsController]
-        OC[OrdersController]
-        RtC[RetailersController]
-        PC[PlatformController]
-    end
-
-    subgraph Core["MarqSpec.RecipeIQ.Core"]
-        RDS[RecipeDiscoveryService]
-        CS[CreatorService]
-        FS[FulfillmentService]
-        RS[RetailerService]
-        PS[PlatformService]
-    end
-
-    subgraph Data["MarqSpec.RecipeIQ.Data"]
-        Store[RecipeIQDbContext]
-    end
-
-    HC -->|discovers recipes| RC
-    CR -->|publishes recipes| CC
-    RT -->|lists inventory| RtC
-    PL -->|monitors metrics| PC
-
-    RC --> RDS
-    CC --> CS
-    OC --> FS
-    RtC --> RS
-    PC --> PS
-
-    RDS & CS & FS & RS & PS --> Store
-```
+See [Architecture](.docs/architecture.md) for the full system diagram, component map, ADRs, and deployment target.
 
 ## Collaboration Model
 
@@ -96,7 +55,7 @@ graph TB
 
 - Language: C# / .NET (latest LTS)
 - API style: RESTful, controller-per-domain-concept
-- Tests: xUnit, no mocking of domain services — prefer integration style against `InMemoryStore`
+- Tests: xUnit, no mocking of domain services — prefer integration style against real service implementations
 - Diagrams: Mermaid (`.md` files in `.docs/` or agent context folders)
 - Branch strategy: Gitflow — `feature/*` → `develop` → `release/*` → `main`; see [.docs/branching-strategy.md](.docs/branching-strategy.md)
 - `main` is production-only; all development integrates through `develop`

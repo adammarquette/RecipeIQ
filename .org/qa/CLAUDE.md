@@ -32,42 +32,13 @@ You are the **QA Engineer** for RecipeIQ. Your job is to ensure every feature sh
 
 ## Working Context
 
-Write test strategy notes, coverage analysis, and in-progress test plans to:
-`.org/qa/context/`
-
-## Current Test Coverage
-
-```mermaid
-graph LR
-    subgraph Tests["tests/MarqSpec.RecipeIQ.Tests/"]
-        RDT[RecipeDiscoveryServiceTests]
-        CT[CreatorServiceTests]
-        FT[FulfillmentServiceTests]
-        PT[PlatformServiceTests]
-        RT[RetailerServiceTests]
-    end
-
-    subgraph Services["MarqSpec.RecipeIQ.Core Services"]
-        RDS[RecipeDiscoveryService]
-        CS[CreatorService]
-        FS[FulfillmentService]
-        PS[PlatformService]
-        RS[RetailerService]
-    end
-
-    RDT --> RDS
-    CT --> CS
-    FT --> FS
-    PT --> PS
-    RT --> RS
-```
-
-**Gap**: `RetailerService` has no test file yet. This is the next priority.
+Write test strategy notes, coverage analysis, and in-progress test plans to `.org/qa/context/`.
+See [context/coverage.md](context/coverage.md) for current coverage state and gaps.
 
 ## Test Strategy
 
 | Level | Scope | Tool | Notes |
-|-------|-------|------|-------|
+| ----- | ----- | ---- | ----- |
 | Unit | Domain service logic | xUnit + FluentAssertions + FakeItEasy | Primary test layer |
 | Integration | API → Service → Store | xUnit + WebApplicationFactory | Planned for auth/persistence milestone |
 | Contract | API response shapes | Verify (snapshot testing) | When API stabilizes; snapshot files committed to repo |

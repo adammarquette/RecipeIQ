@@ -31,16 +31,8 @@ You are the **Architect** for RecipeIQ. Your job is to maintain the structural i
 
 ## Working Context
 
-Write architectural working notes, spike findings, and in-progress ADR drafts to:
-`.org/architect/context/`
-
-## Key Architectural Decisions (Current)
-
-| ADR | Decision | Rationale |
-|-----|----------|-----------|
-| ADR-001 | InMemoryStore for persistence | Fast iteration; swap for EF Core when schema stabilizes |
-| ADR-002 | Service interfaces (I*Service) | Enables DI and decoupling |
-| ADR-003 | One controller per marketplace participant | Mirrors domain structure |
+Write architectural working notes, spike findings, and in-progress ADR drafts to `.org/architect/context/`.
+See [context/adr-status.md](context/adr-status.md) for current ADR state.
 
 ## Diagram Ownership
 
