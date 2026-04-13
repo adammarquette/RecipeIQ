@@ -34,6 +34,7 @@ public enum OrderStatus
     Preparing,
     ReadyForPickup,
     OutForDelivery,
+    Fulfilled,
     Delivered,
     Cancelled
 }

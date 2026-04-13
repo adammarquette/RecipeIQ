@@ -1,0 +1,58 @@
+name: Feature
+description: Create a feature issue from a PRD.
+title: "Feature: "
+labels:
+  - type:feature
+  - status:ready
+  - agent:architect
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: User problem and linked PRD/ADR paths.
+      placeholder: |
+        One paragraph problem statement.
+        PRD: .org/research/context/prd-<feature>.md
+        ADR: .org/architect/context/adr-<nnn>-<topic>.md
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Use Given/When/Then statements.
+      placeholder: |
+        - [ ] Given ..., when ..., then ...
+        - [ ] Given ..., when ..., then ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: Assumptions
+      placeholder: |
+        - [ ] Assumption 1
+        - [ ] Assumption 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of Scope
+      placeholder: Explicitly list what this issue does not cover.
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      placeholder: |
+        Blocked by: #<issue>
+        Requires: .org/research/context/prd-<feature>.md
+    validations:
+      required: false
