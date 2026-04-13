@@ -67,6 +67,7 @@ Link to the relevant handoff file in `.org/<agent>/context/`.]
 | `agent:qa` | Assigned to QA Engineer |
 | `agent:architect` | Assigned to Architect |
 | `agent:platform` | Assigned to Platform Engineer |
+| `agent:ux` | Assigned to UX Designer |
 | `agent:security` | Assigned to Security Engineer |
 | `agent:product-owner` | Assigned to Product Owner |
 | `status:awaiting-human-review` | Opened; waiting for human to approve scope before agents start |
@@ -75,6 +76,7 @@ Link to the relevant handoff file in `.org/<agent>/context/`.]
 | `status:blocked` | Waiting on another issue or decision |
 | `status:review` | PR open; awaiting review |
 | `type:feature` | New user-facing capability |
+| `type:frontend` | Feature or task with user-facing UI — routes through UX before Architect |
 | `type:chore` | Internal improvement, no user-visible change |
 | `type:bug` | Defect in shipped behaviour |
 | `type:spike` | Time-boxed research or prototyping |
@@ -117,12 +119,33 @@ EOF
   --label "status:awaiting-human-review,type:feature" \
   --milestone "..."
 
-# After human approves ("Approved: proceed" comment), route to Architect
+# After human approves scope — route to UX (type:frontend issues)
+gh issue edit <number> \
+  --remove-label "status:awaiting-human-review" \
+  --add-label "agent:ux,status:ready"
+gh issue comment <number> --body \
+  "Scope approved. Routing to UX Designer. Read the linked PRD before designing."
+
+# After human approves scope — route directly to Architect (non-frontend issues)
 gh issue edit <number> \
   --remove-label "status:awaiting-human-review" \
   --add-label "agent:architect,status:ready"
 gh issue comment <number> --body \
-  "Human review approved. Routing to Architect. Read the linked PRD before starting."
+  "Scope approved. Routing to Architect. Read the linked PRD before starting."
+
+# After UX posts Done: — set UX design review gate
+gh issue edit <number> \
+  --remove-label "agent:ux,status:in-progress" \
+  --add-label "status:awaiting-human-review"
+gh issue comment <number> --body \
+  "UX spec complete (see comment above). Awaiting human review of designs before implementation begins."
+
+# After human approves UX designs — route to Architect
+gh issue edit <number> \
+  --remove-label "status:awaiting-human-review" \
+  --add-label "agent:architect,status:ready"
+gh issue comment <number> --body \
+  "UX designs approved. Routing to Architect. Read the UX spec linked above before starting."
 
 # List issues awaiting human review
 gh issue list --label "status:awaiting-human-review"

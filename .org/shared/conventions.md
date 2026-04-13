@@ -186,29 +186,40 @@ Label ownership and transition authority are defined in `.org/shared/issue-workf
 ### Workflow sequence
 
 ```text
-1. Product Owner — writes PRD to .org/research/context/; notifies PM via issue comment or new issue
-2. PM            — opens GitHub Issue, links PRD, adds acceptance criteria and assumptions,
-                   sets status:awaiting-human-review
-3. Human review  — reviews issue scope, acceptance criteria, and assumptions; approves by commenting
-                   "Approved: proceed" or rejects with feedback
-4. PM            — on approval, sets status:ready + agent:architect
-5. Architect     — reads issue + linked PRD; writes ADR to .org/architect/context/;
-                   comments on issue with ADR link and interface contract summary;
-                   PM re-assigns: status:ready + agent:backend + agent:qa
-6. Backend ↔ QA  — run in parallel; each reads issue + prior comments + linked reference docs
-7. Backend       — comments on issue when implementation is complete; opens PR linked to issue
-8. QA            — comments on issue when tests are complete; opens PR linked to issue
-9. PM            — verifies acceptance criteria checked off; closes issue on final merge
+1.  Product Owner — writes PRD to .org/research/context/; notifies PM via issue comment or new issue
+2.  PM            — opens GitHub Issue, links PRD, adds acceptance criteria and assumptions,
+                    sets status:awaiting-human-review
+3.  Human review  — reviews issue scope, acceptance criteria, and assumptions;
+                    approves "Approved: proceed" or rejects with feedback
+4.  PM            — on approval, routes based on issue type:
+                    - type:frontend  → assign agent:ux + status:ready
+                    - all other types → assign agent:architect + status:ready
+5.  UX Designer   — (type:frontend only) reads issue + linked PRD;
+                    writes spec to .org/ux/context/ux-<feature>.md;
+                    posts Done: comment with spec link;
+                    PM sets status:awaiting-human-review (UX design review gate)
+6.  Human review  — (type:frontend only) reviews UX mockups and component specs;
+                    approves "Approved: proceed" or rejects with feedback
+7.  PM            — on UX approval, assigns agent:architect + status:ready
+8.  Architect     — reads issue + prior comments + linked PRD + UX spec;
+                    writes ADR to .org/architect/context/;
+                    posts Done: with ADR link and interface contract summary
+9.  PM            — re-assigns: status:ready + agent:backend + agent:qa
+10. Backend ↔ QA  — run in parallel; each reads issue + all prior comments + linked reference docs
+11. Backend       — posts Done: comment; opens PR linked to issue
+12. QA            — posts Done: comment; opens PR linked to issue
+13. PM            — verifies all acceptance criteria checked off; closes issue on final merge
 ```
 
 ### Human review
 
-`status:awaiting-human-review` is a mandatory pause state. PM sets it when opening any new issue. No agent is assigned and no work begins until a human approves.
+`status:awaiting-human-review` is a mandatory pause state used at two points in the workflow:
 
-**To approve**: comment `Approved: proceed` on the issue. PM will route to the first agent.
-**To reject or redirect**: comment with feedback. PM will update the issue body and reset to `status:awaiting-human-review`.
+1. **Scope gate** — set by PM when opening any new issue; gates agent work on scope and acceptance criteria
+2. **UX design gate** — set by PM after UX posts `Done:`; gates Architect and implementation on approved designs
 
-This is the primary human guardrail — it ensures a human has reviewed scope and acceptance criteria before any agent begins work.
+**To approve**: comment `Approved: proceed` on the issue. PM routes to the next stage.
+**To reject or redirect**: comment with feedback. PM updates the issue and resets to `status:awaiting-human-review`.
 
 ### Agent comment protocol
 
@@ -225,8 +236,9 @@ Every agent must follow this pattern when working an issue:
 
 | Agent | Must read before starting work |
 | ----- | ------------------------------ |
-| Architect | Issue body + linked PRD in `.org/research/context/` |
-| Backend | Issue body + all prior comments; linked ADR in `.org/architect/context/` |
+| UX Designer | Issue body + all prior comments; linked PRD in `.org/research/context/` |
+| Architect | Issue body + all prior comments; linked PRD; UX spec in `.org/ux/context/` (if present) |
+| Backend | Issue body + all prior comments; linked ADR in `.org/architect/context/`; UX spec (if present) |
 | QA | Issue body + all prior comments; linked ADR in `.org/architect/context/` |
 | Platform | Issue body + all prior comments; `.docs/architecture.md` for deployment target |
 
@@ -237,5 +249,6 @@ Context files are reference documents, not handoff triggers. Name them consisten
 | Document type | File name pattern | Example |
 | ------------- | ----------------- | ------- |
 | PRD / feature brief | `prd-<feature>.md` | `prd-cook-profile.md` |
+| UX spec / wireframes | `ux-<feature>.md` | `ux-cook-profile.md` |
 | ADR | `adr-<nnn>-<topic>.md` | `adr-005-auth-strategy.md` |
 | Pipeline / infra notes | `infra-<topic>.md` | `infra-azure-deploy.md` |
