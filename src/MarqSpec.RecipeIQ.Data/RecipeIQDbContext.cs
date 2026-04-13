@@ -11,7 +11,7 @@ public class RecipeIQDbContext(DbContextOptions<RecipeIQDbContext> options) : Db
     public DbSet<Recipe> Recipes => Set<Recipe>();
     public DbSet<Ingredient> Ingredients => Set<Ingredient>();
     public DbSet<Order> Orders => Set<Order>();
-    public DbSet<Subscription> Subscriptions => Set<Subscription>();
+    public DbSet<SubscriptionPlan> Subscriptions => Set<SubscriptionPlan>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
