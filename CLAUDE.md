@@ -4,7 +4,7 @@ RecipeIQ is a personalized home cooking platform connecting home cooks, recipe c
 
 ## Solution Structure
 
-```
+```text
 RecipeIQ/
 ├── CLAUDE.md                  # This file — org overview and agent roster
 ├── .docs/                     # Master architecture and planning documents
@@ -18,6 +18,7 @@ RecipeIQ/
 │   ├── backend/               # Backend engineer agent persona and context
 │   ├── qa/                    # QA engineer agent persona and context
 │   ├── platform/              # Platform engineer agent persona and context
+│   ├── pm/                    # Project Manager agent persona and context
 │   └── research/              # Research & Requirements agent persona and context
 ├── src/
 │   ├── MarqSpec.RecipeIQ.Api/   # ASP.NET Core Web API (controllers, entry point)
@@ -30,12 +31,13 @@ RecipeIQ/
 ## Agent Roster
 
 | Agent | Persona File | Responsibilities |
-|-------|-------------|-----------------|
-| Architect | [.org/architect/CLAUDE.md](.org/architect/CLAUDE.md) | System design, ADRs, cross-cutting concerns, diagram ownership |
+| ----- | ------------ | ---------------- |
+| Architect | [.org/architect/CLAUDE.md](.org/architect/CLAUDE.md) | System design, ADRs, technical constraints and technology selection, interface contract ownership |
 | Backend Engineer | [.org/backend/CLAUDE.md](.org/backend/CLAUDE.md) | .NET/C# API, domain services, data layer, feature implementation |
-| QA Engineer | [.org/qa/CLAUDE.md](.org/qa/CLAUDE.md) | Test strategy, test authoring, quality gates, coverage |
+| QA Engineer | [.org/qa/CLAUDE.md](.org/qa/CLAUDE.md) | Parallel test strategy with Backend, issue-driven assumptions, quality gates, coverage |
 | Platform Engineer | [.org/platform/CLAUDE.md](.org/platform/CLAUDE.md) | CI/CD, GitHub Actions, infrastructure, observability |
-| Research & Requirements | [.org/research/CLAUDE.md](.org/research/CLAUDE.md) | User research, PRDs, user stories, acceptance criteria, roadmap ownership |
+| Project Manager | [.org/pm/CLAUDE.md](.org/pm/CLAUDE.md) | Sprint planning, GitHub Issue management, cross-agent coordination, roadmap sync |
+| Research & Requirements | [.org/research/CLAUDE.md](.org/research/CLAUDE.md) | User research, PRDs, user stories, acceptance criteria, final roadmap authority |
 
 ## High-Level Architecture
 
@@ -43,13 +45,28 @@ See [Architecture](.docs/architecture.md) for the full system diagram, component
 
 ## Collaboration Model
 
-- **Architect** sets direction via `.docs/` — all agents read architecture before implementing.
+- **Research & Requirements** owns roadmap priorities and is the final authority for roadmap decisions.
+- **Architect** sets technical direction via `.docs/architecture.md` and `.docs/domain-model.md`, approves technical constraints, chooses technologies, and defines public interfaces before implementation starts.
 - **Backend Engineer** owns `src/` and implements features aligned to the architecture.
-- **QA Engineer** owns `tests/` and maintains quality gates for every feature shipped.
+- **QA Engineer** owns `tests/`, works in parallel with Backend whenever prerequisites are met, and records assumptions from GitHub Issues.
 - **Platform Engineer** owns `.github/workflows/` and ensures CI passes before merge.
+- **Project Manager** consumes PRDs from Research and ADRs/interface contracts from Architect to create and manage GitHub Issues; coordinates handoffs and tracks sprint state.
 - All agents write their working context to their own folder under `.org/<agent>/context/`.
 - All diagrams are authored in Mermaid format.
 - Shared conventions and domain language live in [.org/shared/](.org/shared/).
+
+## RACI (Role Clarity)
+
+| Work Item | Research | Architect | PM | Backend | QA | Platform |
+| --------- | -------- | --------- | -- | ------- | -- | -------- |
+| Roadmap priorities and scope | A/R | C | C | I | I | I |
+| Technical constraints and technology choice | C | A/R | I | C | C | C |
+| Public interface contracts (pre-implementation) | I | A/R | C | C | C | I |
+| Feature implementation in `src/` | I | C | I | A/R | C | I |
+| Test strategy and verification in `tests/` | C | C | I | C | A/R | C |
+| CI/CD quality gates and release automation | I | C | C | I | C | A/R |
+
+Legend: `A` = Accountable, `R` = Responsible, `C` = Consulted, `I` = Informed.
 
 ## Key Conventions
 

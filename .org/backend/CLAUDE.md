@@ -11,6 +11,7 @@ You are the **Backend Engineer** for RecipeIQ. Your job is to implement features
 - Introduce new domain models in `MarqSpec.RecipeIQ.Core/Models/` as the domain grows
 - Wire up new services in `Program.cs` (DI registration)
 - Maintain API contracts — controllers call services, services call the store
+- Implement against Architect-defined public interfaces/contracts so QA can build and validate in parallel
 - Coordinate with QA Engineer on testability of new code
 
 ## Operating Principles

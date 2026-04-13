@@ -10,7 +10,7 @@ All agents operating in the RecipeIQ software factory follow these conventions.
 
 ## Project Structure
 
-```
+```text
 src/MarqSpec.RecipeIQ.Api/
   Controllers/        # One controller per marketplace participant
   Program.cs          # Composition root — DI registrations here
@@ -48,7 +48,7 @@ src/MarqSpec.RecipeIQ.Data/
 ## Naming
 
 | Construct | Convention | Example |
-|-----------|-----------|---------|
+| --------- | ---------- | ------- |
 | Types, methods, properties, events | PascalCase | `RecipeDiscoveryService` |
 | Local variables, parameters | camelCase | `recipeId` |
 | Interfaces | `I` prefix + PascalCase | `IRecipeDiscoveryService` |
@@ -61,6 +61,7 @@ src/MarqSpec.RecipeIQ.Data/
 ## Language Features
 
 ### Types and variables
+
 - Use language keywords, not runtime types: `string` not `String`, `int` not `Int32`
 - Use `int` over unsigned types unless the domain specifically requires unsigned
 - Use `var` only when the type is obvious from the right-hand side (e.g., `new`, explicit cast, literal)
@@ -69,38 +70,46 @@ src/MarqSpec.RecipeIQ.Data/
 - Avoid `var` in place of `dynamic`; use `dynamic` only when run-time type inference is the goal
 
 ### Strings
+
 - Use string interpolation for short concatenations: `$"{firstName} {lastName}"`
 - Use `StringBuilder` for string building inside loops over large data
 - Prefer raw string literals over escape sequences or verbatim strings
 
 ### Collections and initialization
+
 - Use collection expressions to initialize collections: `string[] vowels = ["a", "e", "i", "o", "u"];`
 - Use object initializers to simplify object creation
 - Use `required` properties instead of constructors to force initialization where appropriate
 
 ### Delegates
+
 - Use `Func<>` and `Action<>` instead of defining custom delegate types
 - Use concise delegate instantiation syntax; avoid `new Del(Method)` when `Method` alone suffices
 - Use lambda expressions for event handlers that don't need to be removed
 
 ### Exceptions
+
 - Use `try-catch` for exception handling; catch specific exception types — never catch bare `Exception` without a filter
 - Use `using` (braceless form preferred) instead of `try-finally` when the only `finally` code is `Dispose()`
 - Only catch exceptions that can be properly handled
 
 ### Operators and conditionals
+
 - Use `&&` and `||` (short-circuit) instead of `&` and `|` for boolean comparisons
 - Use the `new()` target-typed form or `var` for object instantiation — avoid repeating the full type on both sides
 
 ### Async
+
 - Use `async`/`await` for all I/O-bound operations
 - Be aware of deadlocks; use `ConfigureAwait` where appropriate
 
 ### Namespaces and usings
+
 - Use **file-scoped namespace declarations**: `namespace MarqSpec.RecipeIQ.Core.Services;`
 - Place `using` directives **outside** the namespace declaration
 
 ### LINQ
+
 - Use LINQ for collection manipulation to improve readability
 - Use meaningful query variable names (e.g., `matchingRecipes`, not `q`)
 - Use implicit typing for query and range variables
@@ -109,6 +118,7 @@ src/MarqSpec.RecipeIQ.Data/
 - Use Pascal case for anonymous type properties; rename ambiguous properties
 
 ### Static members
+
 - Always qualify static members with the class name, never a derived class name
 
 ---
@@ -128,7 +138,7 @@ src/MarqSpec.RecipeIQ.Data/
 Reference: [.docs/branching-strategy.md](../../.docs/branching-strategy.md) | [Atlassian Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 
 | Branch | Branches from | Merges into | Purpose |
-|--------|--------------|-------------|---------|
+| ------ | ------------- | ----------- | ------- |
 | `main` | `release/*`, `hotfix/*` | — | Production releases only; tagged |
 | `develop` | `main` (once) | `main` via release | Integration branch; all features land here |
 | `feature/<name>` | `develop` | `develop` | One feature or task per branch |
@@ -159,7 +169,10 @@ Reference: [.docs/branching-strategy.md](../../.docs/branching-strategy.md) | [A
 
 When one agent produces output for another to act on, it writes a handoff file to its own `context/` folder.
 
-Work is to be tracked using Github Issues and linked to handoff files where relevant, but the handoff file is the source of truth for the receiving agent's work — not the issue description.
+Work is tracked in GitHub Issues and linked to handoff files where relevant.
+
+- GitHub Issue state is the source of truth for workflow status (`status:ready`, `status:in-progress`, `status:blocked`, `status:review`).
+- Handoff files are the source of truth for implementation detail and decision context.
 
 ### File naming
 
@@ -175,9 +188,11 @@ Work is to be tracked using Github Issues and linked to handoff files where rele
 
 ```text
 Research  →  prd-<feature>.md in .org/research/context/
-Architect →  reads PRD, writes adr-<nnn>-<topic>.md in .org/architect/context/
-Backend   →  reads ADR + PRD, writes impl-<feature>.md in .org/backend/context/
-QA        →  reads impl notes + acceptance criteria, writes test-<feature>.md in .org/qa/context/
+Architect →  reads PRD, writes adr-<nnn>-<topic>.md and interface contract notes in .org/architect/context/
+PM        →  opens/updates GitHub Issue with acceptance criteria, assumptions, and links to PRD/ADR
+Backend   ↔  QA run in parallel after issue is status:ready and interface contracts exist
+Backend   →  writes impl-<feature>.md in .org/backend/context/
+QA        →  writes test-<feature>.md in .org/qa/context/ using issue-derived assumptions
 ```
 
 ### Reads before starting
@@ -185,6 +200,6 @@ QA        →  reads impl notes + acceptance criteria, writes test-<feature>.md 
 | Agent | Must read before starting work |
 | ----- | ------------------------------ |
 | Architect | `.org/research/context/` for any open PRDs |
-| Backend | `.org/architect/context/` for ADRs; `.org/research/context/` for acceptance criteria |
-| QA | `.org/backend/context/` for impl notes; `.org/research/context/` for acceptance criteria |
+| Backend | `.org/architect/context/` for ADRs/interface contracts; `.org/research/context/` for acceptance criteria; GitHub Issue assumptions |
+| QA | `.org/architect/context/` for interface contracts; `.org/research/context/` for acceptance criteria; GitHub Issue assumptions |
 | Platform | `.docs/architecture.md` for deployment target; `.org/architect/context/` for infra ADRs |

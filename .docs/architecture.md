@@ -139,7 +139,7 @@ erDiagram
 ```mermaid
 sequenceDiagram
     actor Cook as Home Cook
-    participant API as RecipeIQ.Api
+    participant API as MarqSpec.RecipeIQ.Api
     participant RDS as RecipeDiscoveryService
     participant FS as FulfillmentService
     participant Store as RecipeIQDbContext
