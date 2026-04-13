@@ -159,6 +159,8 @@ Reference: [.docs/branching-strategy.md](../../.docs/branching-strategy.md) | [A
 
 When one agent produces output for another to act on, it writes a handoff file to its own `context/` folder.
 
+Work is to be tracked using Github Issues and linked to handoff files where relevant, but the handoff file is the source of truth for the receiving agent's work — not the issue description.
+
 ### File naming
 
 | Handoff type | File name pattern | Example |
