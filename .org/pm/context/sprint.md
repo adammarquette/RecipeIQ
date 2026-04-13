@@ -1,29 +1,31 @@
 # Sprint State
 
-## Current Sprint
+## Current Sprint — Sprint 1: Persistence Foundation
 
-No active sprint snapshot captured yet.
-Next update should include sprint goal, issue IDs, and owners.
+**Goal:** Replace InMemoryStore with EF Core persistence across all services, enabling all subsequent feature development.
+
+**Milestone:** [Sprint 1 — Persistence Foundation](https://github.com/adammarquette/RecipeIQ/milestone/1)
 
 ## Backlog Triage
 
-| Issue | Title | Status | Agent | Milestone | Notes |
-| ----- | ----- | ------ | ----- | --------- | ----- |
-| - | - | - | - | - | - |
+| Issue | Title | Status | Agent | Notes |
+| ----- | ----- | ------ | ----- | ----- |
+| [#10](https://github.com/adammarquette/RecipeIQ/issues/10) | Complete EF Core persistence — replace InMemoryStore | `awaiting-human-review` | — | Architect first, then Backend + QA in parallel |
+| [#11](https://github.com/adammarquette/RecipeIQ/issues/11) | Add development seed data for local bootstrap | `awaiting-human-review` | — | Blocked by #10 |
 
 ## Blockers
 
-_None recorded._
+None recorded.
+
+## Sprint 2 Prep
+
+Product Owner needs to write PRDs before Sprint 2 feature work can begin. Suggested candidates from the roadmap:
+
+- Cook profile management endpoints
+- Authentication / identity
+- Recipe filtering expansion (dietary, budget, prep time)
 
 ## Notes
 
-- Initialize by reading `.docs/roadmap.md` and opening issues for the next roadmap phase.
-- Apply labels from the taxonomy in `.org/pm/CLAUDE.md` before assigning work to any agent.
-
-## Weekly PM Sync Checklist
-
-- Confirm all `status:ready` issues have an explicit `agent:*` owner label.
-- Confirm all active feature issues link a PRD path under `.org/research/context/`.
-- Confirm all architect-complete issues route Backend and QA in parallel.
-- Reconcile roadmap priority order with open milestone issues.
-- Record blocked issues with escalation owner and expected unblock date.
+- All issues open as `status:awaiting-human-review`. Comment `Approved: proceed` on each issue to start routing.
+- Issue #11 has a hard dependency on #10 — do not approve #11 until #10 is complete.
