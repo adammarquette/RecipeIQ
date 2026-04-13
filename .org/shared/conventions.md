@@ -186,17 +186,29 @@ Label ownership and transition authority are defined in `.org/shared/issue-workf
 ### Workflow sequence
 
 ```text
-1. Research   — writes PRD to .org/research/context/; notifies PM via issue comment or new issue
-2. PM         — opens GitHub Issue, links PRD, adds acceptance criteria and assumptions,
-                sets status:ready + agent:architect
-3. Architect  — reads issue + linked PRD; writes ADR to .org/architect/context/;
-                comments on issue with ADR link and interface contract summary;
-                PM re-assigns: status:ready + agent:backend + agent:qa
-4. Backend ↔  QA run in parallel — each reads issue + prior comments + linked reference docs
-5. Backend    — comments on issue when implementation is complete; opens PR linked to issue
-6. QA         — comments on issue when tests are complete; opens PR linked to issue
-7. PM         — verifies acceptance criteria checked off; closes issue on final merge
+1. Product Owner — writes PRD to .org/research/context/; notifies PM via issue comment or new issue
+2. PM            — opens GitHub Issue, links PRD, adds acceptance criteria and assumptions,
+                   sets status:awaiting-human-review
+3. Human review  — reviews issue scope, acceptance criteria, and assumptions; approves by commenting
+                   "Approved: proceed" or rejects with feedback
+4. PM            — on approval, sets status:ready + agent:architect
+5. Architect     — reads issue + linked PRD; writes ADR to .org/architect/context/;
+                   comments on issue with ADR link and interface contract summary;
+                   PM re-assigns: status:ready + agent:backend + agent:qa
+6. Backend ↔ QA  — run in parallel; each reads issue + prior comments + linked reference docs
+7. Backend       — comments on issue when implementation is complete; opens PR linked to issue
+8. QA            — comments on issue when tests are complete; opens PR linked to issue
+9. PM            — verifies acceptance criteria checked off; closes issue on final merge
 ```
+
+### Human review
+
+`status:awaiting-human-review` is a mandatory pause state. PM sets it when opening any new issue. No agent is assigned and no work begins until a human approves.
+
+**To approve**: comment `Approved: proceed` on the issue. PM will route to the first agent.
+**To reject or redirect**: comment with feedback. PM will update the issue body and reset to `status:awaiting-human-review`.
+
+This is the primary human guardrail — it ensures a human has reviewed scope and acceptance criteria before any agent begins work.
 
 ### Agent comment protocol
 

@@ -17,14 +17,24 @@ Agents communicate state through comments only:
 - `Unblocked: <resolution summary>`
 - `Done: <deliverable summary with links>`
 
+## Human Review Gate
+
+Every new issue opens in `status:awaiting-human-review`. No agent is assigned and no work starts until a human comments `Approved: proceed`. PM then routes to the first agent and sets `status:ready`.
+
+If a human rejects or redirects, PM updates the issue body with the feedback and resets to `status:awaiting-human-review`.
+
 ## PM Label Transitions
 
-PM applies label transitions based on agent comments:
+PM applies label transitions based on human approvals and agent comments:
 
-- `Starting:` => set `status:in-progress`
-- `Blocked:` => set `status:blocked`
-- `Unblocked:` => set `status:in-progress`
-- `Done:` => set `status:review` or next `status:ready` for routed agent
+| Trigger | PM action |
+| ------- | --------- |
+| Issue opened | set `status:awaiting-human-review`; no agent label yet |
+| Human `Approved: proceed` | set `status:ready` + `agent:architect` |
+| Agent `Starting:` | set `status:in-progress` |
+| Agent `Blocked:` | set `status:blocked` |
+| Agent `Unblocked:` | set `status:in-progress` |
+| Agent `Done:` | set `status:review`; route to next agent with `status:ready` |
 
 ## Parallel Stage Rule
 
