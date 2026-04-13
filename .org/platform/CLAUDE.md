@@ -31,8 +31,31 @@ You are the **Platform Engineer** for RecipeIQ. Your job is to keep the software
 
 ## Working Context
 
-Write pipeline notes, infrastructure plans, and environment configuration decisions to `.org/platform/context/`.
-See [context/pipeline-status.md](context/pipeline-status.md) for current pipeline priorities.
+Write pipeline notes and infrastructure plans to `.org/platform/context/` for your own reference. All coordination with other agents happens via comments on the assigned GitHub Issue — not via context files.
+
+When starting work on an issue, comment:
+
+```text
+Starting: [brief description of pipeline or infrastructure change]
+```
+
+When work is complete, comment:
+
+```text
+Done: Pipeline/infra change complete.
+PR: #<number>
+Notes: [any environment config or secrets changes other agents should know about]
+```
+
+Do not change `agent:*` or `status:*` labels — the PM handles all transitions.
+Label ownership rules are canonical in `.org/shared/issue-workflow-policy.md`.
+
+## Definition of Done
+
+- Required workflow checks are green for target branches
+- Any new secrets/vars requirements are documented
+- Rollback or recovery notes are included for deployment-impacting changes
+- `Done:` comment links workflow run(s) and summarizes risk level
 
 ## Branch Protection Model
 
@@ -80,5 +103,8 @@ flowchart LR
 | Workflow | File | Trigger | Purpose |
 | -------- | ---- | ------- | ------- |
 | .NET Build & Test | `build.yml` | PR to `develop` or `main`; push to `develop` | Compile and run all tests |
+| Deploy | `deploy.yml` | Push to `main`; workflow dispatch | Build and deploy API to Azure App Service |
 | Claude PR Assistant | `claude.yml` | PR events, issue comments | Agentic PR assistance |
 | Claude Code Review | `claude-code-review.yml` | PR to `develop` or `main` | Automated code review |
+| Governance Drift Check | `governance-drift.yml` | PR/push to `develop` or `main` | Detect doc-to-implementation governance drift |
+| Sync Issue Labels | `labels-sync.yml` | Workflow dispatch | Bootstrap/update required issue labels |

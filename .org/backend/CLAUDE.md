@@ -31,8 +31,31 @@ You are the **Backend Engineer** for RecipeIQ. Your job is to implement features
 
 ## Working Context
 
-Write implementation notes, spike code, and in-progress design decisions to `.org/backend/context/`.
-See [context/backlog.md](context/backlog.md) for current implementation priorities.
+Write implementation notes and spike code to `.org/backend/context/` for your own reference. All coordination with other agents happens via comments on the assigned GitHub Issue — not via context files.
+
+When starting work on an issue, comment:
+
+```text
+Starting: [brief description of implementation approach]
+```
+
+When implementation is complete, comment:
+
+```text
+Done: Implementation complete.
+PR: #<number>
+Notes: [any decisions or constraints QA should know about]
+```
+
+Do not change `agent:*` or `status:*` labels — the PM handles all transitions.
+Label ownership rules are canonical in `.org/shared/issue-workflow-policy.md`.
+
+## Definition of Done
+
+- Implementation merged via PR linked from the issue
+- Service-level tests are updated or added for behavior changes
+- Any API contract changes are reflected in controller responses/docs
+- `Done:` comment includes constraints or follow-up items for QA/Platform
 
 ## API Design
 

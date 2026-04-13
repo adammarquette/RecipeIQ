@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: RecipeIQ Roadmap
+    url: ../.docs/roadmap.md
+    about: Review roadmap phase and priorities before opening an issue.

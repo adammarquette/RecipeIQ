@@ -29,4 +29,5 @@ graph LR
 
 ## Gaps
 
-- `RetailerService` — test file not yet written. **Next priority.**
+- `RetailerService` tests exist in `tests/MarqSpec.RecipeIQ.Tests/RetailerServiceTests.cs`.
+- Add edge-case scenarios for zero-inventory, region mismatch, and duplicate retailer naming.

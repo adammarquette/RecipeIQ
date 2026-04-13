@@ -158,48 +158,72 @@ Reference: [.docs/branching-strategy.md](../../.docs/branching-strategy.md) | [A
 
 ## Agent Context Files
 
-- Each agent writes working context to `.org/<agent>/context/`
+- Each agent writes working notes and reference documents to `.org/<agent>/context/`
 - Context files are `.md` with Mermaid diagrams where helpful
 - Context is not ephemeral — it persists across sessions as working memory
 - **Never embed volatile working state in a CLAUDE.md persona file** — put it in `context/` instead
+- Context files are reference material (PRDs, ADRs, design notes) — they are **not** the coordination mechanism between agents
 
 ---
 
-## Agent Handoff Protocol
+## GitHub Issue Workflow
 
-When one agent produces output for another to act on, it writes a handoff file to its own `context/` folder.
+GitHub Issues are the **single source of truth** for all inter-agent coordination. Status, progress, blockers, decisions, and handoffs are all tracked as issue comments and labels. Context files in `.org/<agent>/context/` are reference documents linked from issues — not triggers for work.
 
-Work is tracked in GitHub Issues and linked to handoff files where relevant.
+### Tooling
 
-- GitHub Issue state is the source of truth for workflow status (`status:ready`, `status:in-progress`, `status:blocked`, `status:review`).
-- Handoff files are the source of truth for implementation detail and decision context.
+All agents use the `gh` CLI for issue interaction:
 
-### File naming
+```bash
+gh issue list --label "agent:architect,status:ready"
+gh issue view <number>
+gh issue comment <number> --body "..."
+gh issue edit <number> --add-label "status:in-progress" --remove-label "status:ready" # PM only
+```
 
-| Handoff type | File name pattern | Example |
-| ------------ | ----------------- | ------- |
-| PRD / feature brief | `prd-<feature>.md` | `prd-cook-profile.md` |
-| Implementation notes | `impl-<feature>.md` | `impl-cook-profile.md` |
-| Test plan / coverage notes | `test-<feature>.md` | `test-cook-profile.md` |
-| ADR draft | `adr-<nnn>-<topic>.md` | `adr-005-auth-strategy.md` |
-| Pipeline / infra change | `infra-<topic>.md` | `infra-azure-deploy.md` |
+Label ownership and transition authority are defined in `.org/shared/issue-workflow-policy.md`.
 
-### Handoff sequence
+### Workflow sequence
 
 ```text
-Research  →  prd-<feature>.md in .org/research/context/
-Architect →  reads PRD, writes adr-<nnn>-<topic>.md and interface contract notes in .org/architect/context/
-PM        →  opens/updates GitHub Issue with acceptance criteria, assumptions, and links to PRD/ADR
-Backend   ↔  QA run in parallel after issue is status:ready and interface contracts exist
-Backend   →  writes impl-<feature>.md in .org/backend/context/
-QA        →  writes test-<feature>.md in .org/qa/context/ using issue-derived assumptions
+1. Research   — writes PRD to .org/research/context/; notifies PM via issue comment or new issue
+2. PM         — opens GitHub Issue, links PRD, adds acceptance criteria and assumptions,
+                sets status:ready + agent:architect
+3. Architect  — reads issue + linked PRD; writes ADR to .org/architect/context/;
+                comments on issue with ADR link and interface contract summary;
+                PM re-assigns: status:ready + agent:backend + agent:qa
+4. Backend ↔  QA run in parallel — each reads issue + prior comments + linked reference docs
+5. Backend    — comments on issue when implementation is complete; opens PR linked to issue
+6. QA         — comments on issue when tests are complete; opens PR linked to issue
+7. PM         — verifies acceptance criteria checked off; closes issue on final merge
 ```
+
+### Agent comment protocol
+
+Every agent must follow this pattern when working an issue:
+
+| Event | Action |
+| ----- | ------ |
+| Starting work | Comment: `Starting: [brief description of approach]`; PM applies label transitions |
+| Blocked | Comment: `Blocked: [description]`; PM applies label transitions |
+| Unblocked | Comment: `Unblocked: [description]`; PM applies label transitions |
+| Work complete | Comment: `Done: [summary of output, links to PRs or reference files]`; PM applies label transitions |
 
 ### Reads before starting
 
 | Agent | Must read before starting work |
 | ----- | ------------------------------ |
-| Architect | `.org/research/context/` for any open PRDs |
-| Backend | `.org/architect/context/` for ADRs/interface contracts; `.org/research/context/` for acceptance criteria; GitHub Issue assumptions |
-| QA | `.org/architect/context/` for interface contracts; `.org/research/context/` for acceptance criteria; GitHub Issue assumptions |
-| Platform | `.docs/architecture.md` for deployment target; `.org/architect/context/` for infra ADRs |
+| Architect | Issue body + linked PRD in `.org/research/context/` |
+| Backend | Issue body + all prior comments; linked ADR in `.org/architect/context/` |
+| QA | Issue body + all prior comments; linked ADR in `.org/architect/context/` |
+| Platform | Issue body + all prior comments; `.docs/architecture.md` for deployment target |
+
+### Reference file naming (context folders)
+
+Context files are reference documents, not handoff triggers. Name them consistently so they are easy to link from issues:
+
+| Document type | File name pattern | Example |
+| ------------- | ----------------- | ------- |
+| PRD / feature brief | `prd-<feature>.md` | `prd-cook-profile.md` |
+| ADR | `adr-<nnn>-<topic>.md` | `adr-005-auth-strategy.md` |
+| Pipeline / infra notes | `infra-<topic>.md` | `infra-azure-deploy.md` |
