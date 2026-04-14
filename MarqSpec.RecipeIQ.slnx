@@ -1,0 +1,35 @@
+<Solution>
+  <Project Path="src/MarqSpec.RecipeIQ.Api/MarqSpec.RecipeIQ.Api.csproj" />
+  <Project Path="src/MarqSpec.RecipeIQ.Core/MarqSpec.RecipeIQ.Core.csproj" />
+  <Project Path="src/MarqSpec.RecipeIQ.Data/MarqSpec.RecipeIQ.Data.csproj" />
+  <Project Path="tests/MarqSpec.RecipeIQ.Tests/MarqSpec.RecipeIQ.Tests.csproj" />
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+    <File Path="CLAUDE.md" />
+    <File Path=".gitignore" />
+    <Folder Name="/Solution Items/.docs/">
+      <File Path=".docs/architecture.md" />
+      <File Path=".docs/branching-strategy.md" />
+      <File Path=".docs/domain-model.md" />
+      <File Path=".docs/roadmap.md" />
+    </Folder>
+    <Folder Name="/Solution Items/.org/">
+      <Folder Name="/Solution Items/.org/shared/">
+        <File Path=".org/shared/conventions.md" />
+        <File Path=".org/shared/glossary.md" />
+      </Folder>
+      <Folder Name="/Solution Items/.org/architect/">
+        <File Path=".org/architect/CLAUDE.md" />
+      </Folder>
+      <Folder Name="/Solution Items/.org/backend/">
+        <File Path=".org/backend/CLAUDE.md" />
+      </Folder>
+      <Folder Name="/Solution Items/.org/qa/">
+        <File Path=".org/qa/CLAUDE.md" />
+      </Folder>
+      <Folder Name="/Solution Items/.org/platform/">
+        <File Path=".org/platform/CLAUDE.md" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Solution>

@@ -1,0 +1,10 @@
+# CODEOWNERS
+
+/CLAUDE.md @adammarquette
+/.org/ @adammarquette
+/.docs/ @adammarquette
+/src/ @adammarquette
+/tests/ @adammarquette
+/.github/workflows/ @adammarquette
+/.github/ISSUE_TEMPLATE/ @adammarquette
+/.github/CODEOWNERS @adammarquette

@@ -416,3 +416,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+.claude/worktrees/affectionate-driscoll
+.claude/worktrees/affectionate-driscoll
+.claude/settings.local.json
