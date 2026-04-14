@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, ready_for_review, reopened]
     branches:
       - develop
-      - main
+      - master
 
 jobs:
   claude-review:

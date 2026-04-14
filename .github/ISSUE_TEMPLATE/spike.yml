@@ -3,8 +3,7 @@ description: Time-boxed research task to reduce uncertainty.
 title: "Spike: "
 labels:
   - type:spike
-  - status:ready
-  - agent:architect
+  - status:awaiting-human-review
 body:
   - type: textarea
     id: question

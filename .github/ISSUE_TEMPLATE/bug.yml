@@ -3,8 +3,7 @@ description: Report a defect in shipped behavior.
 title: "Bug: "
 labels:
   - type:bug
-  - status:ready
-  - agent:backend
+  - status:awaiting-human-review
 body:
   - type: textarea
     id: summary
