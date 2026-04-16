@@ -1,11 +1,11 @@
-# RecipeIQ — Agentic Development Organization
+# __PROJECT_NAME__ — Agentic Development Organization
 
-RecipeIQ is a personalized home cooking platform connecting home cooks, recipe creators, retailers, and the platform itself in a four-sided marketplace. It matches people to recipes suited to their moment, household, dietary needs, and budget, with seamless ingredient fulfillment and a creator ecosystem powered by real demand signal.
+__PROJECT_NAME__ is a personalized home cooking platform connecting home cooks, recipe creators, retailers, and the platform itself in a four-sided marketplace. It matches people to recipes suited to their moment, household, dietary needs, and budget, with seamless ingredient fulfillment and a creator ecosystem powered by real demand signal.
 
 ## Solution Structure
 
 ```text
-RecipeIQ/
+__PROJECT_NAME__/
 ├── CLAUDE.md                  # This file — org overview and agent roster
 ├── .docs/                     # Master architecture and planning documents
 │   ├── architecture.md        # System architecture and component diagrams
@@ -24,13 +24,13 @@ RecipeIQ/
 │   ├── security/              # Security engineer agent persona and context
 │   └── ux/                    # UX Designer agent persona and context
 ├── src/
-│   ├── MarqSpec.RecipeIQ.Api/     # ASP.NET Core Web API (controllers, entry point)
-│   ├── MarqSpec.RecipeIQ.Core/    # Domain models and services
-│   ├── MarqSpec.RecipeIQ.Data/    # EF Core DbContext, entities, migrations
-│   ├── MarqSpec.RecipeIQ.Web/     # React + MUI web application (planned)
-│   └── MarqSpec.RecipeIQ.Mobile/  # React Native mobile app — Android + iOS (planned)
+│   ├── __ROOT_NAMESPACE__.Api/     # ASP.NET Core Web API (controllers, entry point)
+│   ├── __ROOT_NAMESPACE__.Core/    # Domain models and services
+│   ├── __ROOT_NAMESPACE__.Data/    # EF Core DbContext, entities, migrations
+│   ├── __ROOT_NAMESPACE__.Web/     # React + MUI web application (planned)
+│   └── __ROOT_NAMESPACE__.Mobile/  # React Native mobile app — Android + iOS (planned)
 └── tests/
-    └── MarqSpec.RecipeIQ.Tests/ # xUnit integration and unit tests
+    └── __ROOT_NAMESPACE__.Tests/ # xUnit integration and unit tests
 ```
 
 ## Agent Roster
@@ -96,3 +96,4 @@ Legend: `A` = Accountable, `R` = Responsible, `C` = Consulted, `I` = Informed.
 - Branch strategy: Gitflow — `feature/*` → `develop` → `release/*` → `master`; see [.docs/branching-strategy.md](.docs/branching-strategy.md)
 - `master` is production-only; all development integrates through `develop`
 - Merges to `master` require human approval; merges to `develop` require Claude Code Review pass
+

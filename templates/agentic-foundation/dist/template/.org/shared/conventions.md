@@ -1,6 +1,6 @@
 # Shared Conventions
 
-All agents operating in the RecipeIQ software factory follow these conventions.
+All agents operating in the __PROJECT_NAME__ software factory follow these conventions.
 
 **Authoritative reference**: [.NET C# Coding Conventions — Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
 
@@ -11,25 +11,25 @@ All agents operating in the RecipeIQ software factory follow these conventions.
 ## Project Structure
 
 ```text
-src/MarqSpec.RecipeIQ.Api/
+src/__ROOT_NAMESPACE__.Api/
   Controllers/        # One controller per marketplace participant
   Program.cs          # Composition root — DI registrations here
 
-src/MarqSpec.RecipeIQ.Core/
+src/__ROOT_NAMESPACE__.Core/
   Models/             # Domain entities (plain C# classes, no framework deps)
   Services/           # Domain services + interfaces
 
-src/MarqSpec.RecipeIQ.Data/
+src/__ROOT_NAMESPACE__.Data/
   Entities/           # EF Core entity models (mapped to DB schema)
   Migrations/         # EF Core migrations (auto-generated; do not edit manually)
-  RecipeIQDbContext.cs  # Single DbContext for the solution
+  __PROJECT_NAME__DbContext.cs  # Single DbContext for the solution
 ```
 
-- **Namespaces**: `MarqSpec.RecipeIQ.Api.*` for presentation, `MarqSpec.RecipeIQ.Core.*` for domain, `MarqSpec.RecipeIQ.Data.*` for data access
+- **Namespaces**: `__ROOT_NAMESPACE__.Api.*` for presentation, `__ROOT_NAMESPACE__.Core.*` for domain, `__ROOT_NAMESPACE__.Data.*` for data access
 - One type per file; filename matches type name
-- `MarqSpec.RecipeIQ.Core` must not reference ASP.NET or any infrastructure library
-- `MarqSpec.RecipeIQ.Data` owns all EF Core concerns; no entity models or `DbContext` types may live outside this project
-- `MarqSpec.RecipeIQ.Core` may reference `MarqSpec.RecipeIQ.Data` but not `MarqSpec.RecipeIQ.Api`
+- `__ROOT_NAMESPACE__.Core` must not reference ASP.NET or any infrastructure library
+- `__ROOT_NAMESPACE__.Data` owns all EF Core concerns; no entity models or `DbContext` types may live outside this project
+- `__ROOT_NAMESPACE__.Core` may reference `__ROOT_NAMESPACE__.Data` but not `__ROOT_NAMESPACE__.Api`
 
 ---
 
@@ -105,7 +105,7 @@ src/MarqSpec.RecipeIQ.Data/
 
 ### Namespaces and usings
 
-- Use **file-scoped namespace declarations**: `namespace MarqSpec.RecipeIQ.Core.Services;`
+- Use **file-scoped namespace declarations**: `namespace __ROOT_NAMESPACE__.Core.Services;`
 - Place `using` directives **outside** the namespace declaration
 
 ### LINQ
@@ -259,3 +259,4 @@ Context files are reference documents, not handoff triggers. Name them consisten
 | UX spec / wireframes | `ux-<feature>.md` | `ux-cook-profile.md` |
 | ADR | `adr-<nnn>-<topic>.md` | `adr-005-auth-strategy.md` |
 | Pipeline / infra notes | `infra-<topic>.md` | `infra-azure-deploy.md` |
+

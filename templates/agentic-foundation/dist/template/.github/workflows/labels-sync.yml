@@ -1,0 +1,55 @@
+name: Sync Issue Labels
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  sync-labels:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sync labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const labels = [
+              { name: 'agent:backend', color: '0e8a16', description: 'Assigned to Backend Engineer' },
+              { name: 'agent:qa', color: '1d76db', description: 'Assigned to QA Engineer' },
+              { name: 'agent:architect', color: '5319e7', description: 'Assigned to Architect' },
+              { name: 'agent:platform', color: '0052cc', description: 'Assigned to Platform Engineer' },
+              { name: 'agent:product-owner', color: 'fbca04', description: 'Assigned to Product Owner' },
+              { name: 'agent:security', color: 'b60205', description: 'Assigned to Security Engineer' },
+              { name: 'agent:ux', color: 'e4e669', description: 'Assigned to UX Designer' },
+              { name: 'status:awaiting-human-review', color: 'eeeeee', description: 'Waiting for human approval before work begins' },
+              { name: 'status:ready', color: 'c2e0c6', description: 'All prerequisites met; ready to start' },
+              { name: 'status:in-progress', color: 'fbca04', description: 'Agent is actively working' },
+              { name: 'status:blocked', color: 'd93f0b', description: 'Waiting on decision or dependency' },
+              { name: 'status:review', color: '5319e7', description: 'PR open; awaiting review' },
+              { name: 'type:feature', color: '0e8a16', description: 'New user-facing capability' },
+              { name: 'type:frontend', color: 'bfd4f2', description: 'Feature with user-facing UI; routes through UX before Architect' },
+              { name: 'type:chore', color: 'bfdadc', description: 'Internal improvement' },
+              { name: 'type:bug', color: 'd73a4a', description: 'Defect in shipped behavior' },
+              { name: 'type:spike', color: 'f9d0c4', description: 'Time-boxed research task' }
+            ];
+
+            for (const label of labels) {
+              try {
+                await github.rest.issues.getLabel({ owner, repo, name: label.name });
+                await github.rest.issues.updateLabel({ owner, repo, name: label.name, new_name: label.name, color: label.color, description: label.description });
+                core.info(`Updated label: ${label.name}`);
+              } catch (error) {
+                if (error.status === 404) {
+                  await github.rest.issues.createLabel({ owner, repo, name: label.name, color: label.color, description: label.description });
+                  core.info(`Created label: ${label.name}`);
+                } else {
+                  throw error;
+                }
+              }
+            }
+

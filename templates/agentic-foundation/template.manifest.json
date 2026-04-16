@@ -1,0 +1,24 @@
+{
+  "templateVersion": "1.0.0",
+  "name": "agentic-foundation",
+  "description": "Reusable governance and agent-ops assets for new repositories.",
+  "includeDirectories": [
+    ".github/agents",
+    ".github/instructions",
+    ".github/workflows",
+    ".github/scripts",
+    ".org",
+    ".docs"
+  ],
+  "includeFiles": [
+    ".github/copilot-instructions.md",
+    "CLAUDE.md"
+  ],
+  "defaultPlaceholders": {
+    "__PROJECT_NAME__": "MyProject",
+    "__ROOT_NAMESPACE__": "Company.MyProject",
+    "__GITHUB_OWNER__": "your-org",
+    "__REPOSITORY_NAME__": "my-repo",
+    "__GITHUB_REPO_SLUG__": "your-org/my-repo"
+  }
+}

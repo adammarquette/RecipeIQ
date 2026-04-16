@@ -1,0 +1,23 @@
+name: Governance Drift Check
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+  push:
+    branches:
+      - develop
+      - master
+
+jobs:
+  governance-drift:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run governance drift checks
+        run: bash .github/scripts/check-governance-drift.sh
+

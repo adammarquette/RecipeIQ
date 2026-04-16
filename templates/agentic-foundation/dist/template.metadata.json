@@ -1,0 +1,12 @@
+{
+  "generatedUtc": "2026-04-16T17:34:03.0560252Z",
+  "sourceRoot": "C:\\Users\\Adam\\source\\repos\\adammarquette\\RecipeIQ",
+  "templateVersion": "1.0.0",
+  "placeholders": {
+    "__PROJECT_NAME__": "MyProject",
+    "__ROOT_NAMESPACE__": "Company.MyProject",
+    "__GITHUB_OWNER__": "your-org",
+    "__REPOSITORY_NAME__": "my-repo",
+    "__GITHUB_REPO_SLUG__": "your-org/my-repo"
+  }
+}
